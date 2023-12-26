@@ -1,0 +1,38 @@
+Database is hosted at elephantQL (https://www.elephantsql.com/)
+For accessing the database , I have used beekeeper studio , which is connected to elephantsql
+Beekeper Studio - https://www.beekeeperstudio.io/
+
+Schema :-
+1. users Table
+This table will store information about users including their email, password, and role. The role can be either 'employee' or 'manager'.
+
+user_id (Primary Key)
+email
+password
+role
+
+
+2. employees Table
+This table will store details about employees.
+
+employee_id (Primary Key)
+user_id (Foreign Key referencing users.user_id)
+name
+designation
+date_of_joining
+gender
+mobile_number
+insurance_number
+
+
+3. dependents Table
+This table will store information about dependents of the employees.
+
+dependent_id (Primary Key)
+employee_id (Foreign Key referencing employees.employee_id)
+name
+date_of_birth
+relation
+
+
+All the related queries have been run on beekeeper studio for creating the above mentioned tabels.
