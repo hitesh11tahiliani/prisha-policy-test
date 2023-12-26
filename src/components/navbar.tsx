@@ -6,8 +6,8 @@ import { TiDocumentAdd } from "react-icons/ti";
 import { allEmployees, employeeDependents } from "../helper/apiClients";
 import profileOne from "../assets/profile1.jpeg";
 import Banner from "../assets/poweredByIcon.jpg";
-import { getUserName, getUserRole } from '../helper/stateManagment';
-import WhatsNext from "../assets/whatsNext.jpg"
+import { getUserName, getUserRole } from "../helper/stateManagment";
+import WhatsNext from "../assets/whatsNext.jpg";
 
 const buttonsEmployee = [
   { icon: <FaRegBell className="fa-lg mx-4" />, text: "Notifications" },
@@ -30,24 +30,22 @@ const buttonsHRManager = [
   { icon: <FaRegUser className="fa-lg mx-4" />, text: "Profile" },
 ];
 
-
-
 const Navbar: React.FC = () => {
   // const [dependents, setDependents] = useState([]);
   const [allEmployee, setAllEmployee] = useState([]);
-  // const userRole = "employee"; 
+  // const userRole = "employee";
   // const role = getUserRole();
   const role = localStorage.getItem("userRole");
   // const userName = getUserName();
-  const userName = localStorage.getItem("userName")
- 
+  const userName = localStorage.getItem("userName");
+
   console.log("Role from another file:", role);
   useEffect(() => {
     async function fetchData() {
       try {
         const dependentsResponse = await employeeDependents({ employee_id: 1 });
         setDependents(dependentsResponse);
-       
+
         const allEmployeesResponse = await allEmployees();
         setAllEmployee(allEmployeesResponse);
       } catch (error) {
@@ -59,87 +57,64 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <div id="navbar" className="h-screen bg-white shadow-md w-60 fixed border">
+    <div
+      id="navbar"
+      className="bg-white shadow-md fixed border lg:w-60 md:w-40 sm:w-40 h-screen"
+    >
       <div className="flex flex-col h-full">
         <div className="flex flex-row justify-evenly items-center p-3 py-4">
           <img className="rounded-full w-7 h-7" src={profileOne} alt="" />
-          <h2 className="font-semibold">
-            {userName.length !== 0 ? (
-              <>{userName}</>
-            ) : (
-              "Loading.."
-            )}
+          <h2 className="font-semibold text-xs md:text-sm lg:text-base">
+            {userName.length !== 0 ? userName : "Loading.."}
           </h2>
         </div>
 
         <hr className="my-0 p-0 self-start w-full border-gray-300" />
 
         <div className="flex flex-col justify-between h-3/5">
-          {role === "Employee"
-            ? buttonsEmployee.map((button, index) => (
-                <button
-                  key={index}
-                  className={`flex items-center pl-4 hover:bg-[#EDF5FF] py-2 ${
-                    button.text === "Dependents" ? "bg-[#EDF5FF]" : ""
-                  }`}
-                >
-                  {button.icon}
-                  <span>{button.text}</span>
-                </button>
-              ))
-            : buttonsHRManager.map((button, index) => (
-                <button
-                  key={index}
-                  className={`flex items-center pl-4 hover:bg-[#EDF5FF] py-2 ${
-                    button.text === "Employees" ? "bg-[#EDF5FF]" : ""
-                  }`}                >
-                  {button.icon}
-                  <span>{button.text}</span>
-                </button>
-              ))}
+          {(role === "Employee" ? buttonsEmployee : buttonsHRManager).map(
+            (button, index) => (
+              <button
+                key={index}
+                className={`flex items-center pl-4 hover:bg-[#EDF5FF] py-2 ${
+                  button.text ===
+                  (role === "Employee" ? "Dependents" : "Employees")
+                    ? "bg-[#EDF5FF]"
+                    : ""
+                }`}
+              >
+                {button.icon}
+                <span className="text-xs md:text-sm">{button.text}</span>
+              </button>
+            )
+          )}
         </div>
 
-        {role === "Employee"
-            ? <div>
+        {role === "Employee" ? (
+          <div>
             <img
-              className=" w-60 h-[263px] rounded-md p-1 pb-0"
+              className="w-full h-auto rounded-md p-1 pb-0"
               src={WhatsNext}
               alt=""
-            ></img>
-            <img
-              className=" h-[52px] w-60 rounded-md p-1"
-              src={Banner}
-              alt=""
-            ></img>
+            />
+            <img className="h-auto w-full rounded-md p-1" src={Banner} alt="" />
           </div>
-            : <div>
-            <div className="absolute bottom-0">
-              <hr className="mb-3 p-0 self-start w-full border-gray-300" />
-              <div className="flex flex-row items-center justify-center text-center">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" value="" className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-800 peer-checked:bg-blue-800"></div>
-                  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Employee View
-                  </span>
-                </label>
-              </div>
-              <hr className="mt-2 p-0 self-start w-full border-gray-300" />
-              <img
-                className=" h-[52px] w-60 rounded-md p-1"
-                src={Banner}
-                alt=""
-              ></img>
+        ) : (
+          <div className="absolute bottom-0">
+            <hr className="mb-3 p-0 self-start w-full border-gray-300" />
+            <div className="flex flex-row items-center justify-center text-center">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" value="" className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-800"></div>
+                <span className="ms-3 text-xs md:text-sm font-medium text-gray-900">
+                  Employee View
+                </span>
+              </label>
             </div>
+            <hr className="mt-2 p-0 self-start w-full border-gray-300" />
+            <img className="h-auto w-full rounded-md p-1" src={Banner} alt="" />
           </div>
-              }
-
-        
-
-
-
-
-        
+        )}
       </div>
     </div>
   );

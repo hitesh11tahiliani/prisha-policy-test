@@ -72,22 +72,7 @@ export const appRouter  = t.router({
      /** DEPENDENTS OF A SPECIFIC USER **/
 
   getAllDependentsOfUser : t.procedure
-  // .input(z.object({
-  //   userId: z.number()
-  // }))
-  // .query(async ({ input }) => {
-  //   const { userId } = input;
-
-  //   const dependentsRes = await client.query(
-  //     `SELECT d.*
-  //      FROM dependents d
-  //      JOIN employees e ON d.employee_id = e.employee_id
-  //      WHERE e.user_id = $1`,
-  //     [userId]
-  //   );
-
-  //   return dependentsRes.rows;
-
+  
   .input(z.object({
     employeeId: z.number()
   }))
